@@ -26,6 +26,7 @@ export function useTodos() {
   const [tasks, setTasks] = useState<Task[]>(() => loadTasksFromStorage());
   const [filter, setFilter] = useState<FilterStatus>('all');
   const [priorityFilter, setPriorityFilter] = useState<'all' | Priority>('all');
+  const [categoryFilter, setCategoryFilter] = useState<'all' | TaskCategory>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortBy, setSortBy] = useState<SortOption>('newest');
   const [toast, setToast] = useState<ToastNotification | null>(null);
@@ -84,7 +85,7 @@ export function useTodos() {
     title: string,
     priority: Priority = 'medium',
     dueDate?: string,
-    category: TaskCategory = 'General' as TaskCategory,
+    category: TaskCategory = 'Personal',
     notes?: string,
     estimatedMinutes?: number
   ): { success: boolean; error?: string } => {
@@ -451,6 +452,11 @@ export function useTodos() {
       result = result.filter(t => t.priority === priorityFilter);
     }
 
+    // Filter by category
+    if (categoryFilter !== 'all') {
+      result = result.filter(t => (t.category || 'Other') === categoryFilter);
+    }
+
     // Filter by search query (searches title, category, notes, and subtask titles)
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
@@ -490,7 +496,7 @@ export function useTodos() {
     });
 
     return result;
-  }, [tasks, filter, priorityFilter, searchQuery, sortBy]);
+  }, [tasks, filter, priorityFilter, categoryFilter, searchQuery, sortBy]);
 
   return {
     tasks,
@@ -499,6 +505,8 @@ export function useTodos() {
     setFilter,
     priorityFilter,
     setPriorityFilter,
+    categoryFilter,
+    setCategoryFilter,
     searchQuery,
     setSearchQuery,
     sortBy,

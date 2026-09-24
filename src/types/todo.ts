@@ -1,6 +1,15 @@
 export type Priority = 'low' | 'medium' | 'high';
 
-export type TaskCategory = 'Study' | 'Work' | 'Personal' | 'Other';
+export type TaskCategory = 'Personal' | 'Work' | 'Shopping' | 'Study' | 'Health' | 'Other';
+
+export const TASK_CATEGORIES: TaskCategory[] = [
+  'Personal',
+  'Work',
+  'Shopping',
+  'Study',
+  'Health',
+  'Other',
+];
 
 export type TaskStatus = 'todo' | 'in-progress' | 'completed';
 

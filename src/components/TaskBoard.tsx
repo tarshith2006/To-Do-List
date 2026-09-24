@@ -1,5 +1,6 @@
 import { Task, TaskStatus } from '../types/todo';
 import { formatDueDate } from '../utils/storage';
+import { getCategoryBadge } from '../utils/category';
 import { Check, Calendar, Target, Clock, ArrowRight, ArrowLeft, Trash2, Edit2, AlertTriangle } from 'lucide-react';
 
 interface TaskBoardProps {
@@ -110,7 +111,10 @@ export function TaskBoard({
                           {task.priority}
                         </span>
                         {task.category && (
-                          <span className="text-slate-400">· {task.category}</span>
+                          <span className={`inline-flex items-center gap-1 text-[9px] font-semibold px-1.5 py-0.5 rounded-full border shadow-2xs ${getCategoryBadge(task.category).badgeClass}`}>
+                            <span className={`w-1 h-1 rounded-full ${getCategoryBadge(task.category).dotColor}`} />
+                            <span>{task.category}</span>
+                          </span>
                         )}
                       </div>
 

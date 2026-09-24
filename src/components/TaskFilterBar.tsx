@@ -1,11 +1,14 @@
-import { FilterStatus, Priority, SortOption, ViewMode } from '../types/todo';
-import { Search, X, SlidersHorizontal, ArrowUpDown, LayoutList, Kanban } from 'lucide-react';
+import { FilterStatus, Priority, SortOption, ViewMode, TaskCategory, TASK_CATEGORIES } from '../types/todo';
+import { Search, X, SlidersHorizontal, ArrowUpDown, LayoutList, Kanban, Tag } from 'lucide-react';
+import { CATEGORY_CONFIG } from '../utils/category';
 
 interface TaskFilterBarProps {
   filter: FilterStatus;
   onFilterChange: (filter: FilterStatus) => void;
   priorityFilter: 'all' | Priority;
   onPriorityFilterChange: (priority: 'all' | Priority) => void;
+  categoryFilter: 'all' | TaskCategory;
+  onCategoryFilterChange: (category: 'all' | TaskCategory) => void;
   searchQuery: string;
   onSearchChange: (query: string) => void;
   sortBy: SortOption;
@@ -23,6 +26,8 @@ export function TaskFilterBar({
   onFilterChange,
   priorityFilter,
   onPriorityFilterChange,
+  categoryFilter,
+  onCategoryFilterChange,
   searchQuery,
   onSearchChange,
   sortBy,
@@ -133,6 +138,44 @@ export function TaskFilterBar({
               <Kanban className="w-4 h-4" />
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* Middle row: Category Filter Bar */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-0.5 text-xs no-scrollbar">
+        <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 shrink-0 font-medium">
+          <Tag className="w-3.5 h-3.5" />
+          <span>Category:</span>
+        </div>
+        <div className="flex items-center gap-1.5 flex-nowrap">
+          <button
+            onClick={() => onCategoryFilterChange('all')}
+            className={`px-2.5 py-1 rounded-lg text-[11px] font-medium transition-colors cursor-pointer whitespace-nowrap ${
+              categoryFilter === 'all'
+                ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-semibold shadow-xs'
+                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/70 dark:hover:bg-slate-800'
+            }`}
+          >
+            All
+          </button>
+          {TASK_CATEGORIES.map((cat) => {
+            const config = CATEGORY_CONFIG[cat];
+            const isSelected = categoryFilter === cat;
+            return (
+              <button
+                key={cat}
+                onClick={() => onCategoryFilterChange(cat)}
+                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-medium transition-all cursor-pointer whitespace-nowrap border ${
+                  isSelected
+                    ? `${config.badgeClass} ring-1 ring-current font-semibold shadow-2xs`
+                    : 'border-transparent text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${config.dotColor}`} />
+                <span>{cat}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { Task, Priority, TaskCategory, TaskStatus } from '../types/todo';
+import { Task, Priority, TaskCategory, TaskStatus, TASK_CATEGORIES } from '../types/todo';
 import { formatDueDate } from '../utils/storage';
+import { getCategoryBadge } from '../utils/category';
 import {
   Check,
   Edit2,
@@ -53,7 +54,7 @@ export function TaskItem({
   const [editTitle, setEditTitle] = useState(task.title);
   const [editPriority, setEditPriority] = useState<Priority>(task.priority);
   const [editDueDate, setEditDueDate] = useState(task.dueDate || '');
-  const [editCategory, setEditCategory] = useState<TaskCategory>(task.category || 'General' as TaskCategory);
+  const [editCategory, setEditCategory] = useState<TaskCategory>(task.category || 'Personal');
   const [editNotes, setEditNotes] = useState(task.notes || '');
   const [editEstimatedMinutes, setEditEstimatedMinutes] = useState<number | undefined>(task.estimatedMinutes);
   const [editError, setEditError] = useState<string | null>(null);
@@ -71,7 +72,7 @@ export function TaskItem({
     setEditTitle(task.title);
     setEditPriority(task.priority);
     setEditDueDate(task.dueDate || '');
-    setEditCategory(task.category || 'General' as TaskCategory);
+    setEditCategory(task.category || 'Personal');
     setEditNotes(task.notes || '');
     setEditEstimatedMinutes(task.estimatedMinutes);
     setEditError(null);
@@ -179,7 +180,7 @@ export function TaskItem({
             </div>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs pt-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-xs pt-1">
             {/* Priority */}
             <div className="flex items-center gap-1">
               <span className="text-slate-500">Priority:</span>
@@ -197,6 +198,20 @@ export function TaskItem({
                   {p}
                 </button>
               ))}
+            </div>
+
+            {/* Category Dropdown */}
+            <div className="flex items-center gap-1">
+              <span className="text-slate-500">Category:</span>
+              <select
+                value={editCategory}
+                onChange={(e) => setEditCategory(e.target.value as TaskCategory)}
+                className="h-6 px-1.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded text-xs text-slate-800 dark:text-slate-200 cursor-pointer"
+              >
+                {TASK_CATEGORIES.map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
             </div>
 
             {/* Due date */}
@@ -354,11 +369,14 @@ export function TaskItem({
                     </>
                   )}
 
-                  {/* Category */}
-                  {task.category && task.category !== 'Other' && (
+                  {/* Category Badge */}
+                  {task.category && (
                     <>
                       <span aria-hidden="true">·</span>
-                      <span>{task.category}</span>
+                      <span className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full border shadow-2xs ${getCategoryBadge(task.category).badgeClass}`}>
+                        <span className={`w-1.5 h-1.5 rounded-full ${getCategoryBadge(task.category).dotColor}`} />
+                        <span>{task.category}</span>
+                      </span>
                     </>
                   )}
 

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
-import { Priority, TaskCategory } from '../types/todo';
-import { Plus, Calendar, Tag, AlertCircle, Clock, FileText } from 'lucide-react';
+import { Priority, TaskCategory, TASK_CATEGORIES } from '../types/todo';
+import { Plus, Calendar, Tag, AlertCircle, Clock, FileText, ChevronDown } from 'lucide-react';
+import { CATEGORY_CONFIG } from '../utils/category';
 
 interface TaskInputProps {
   onAddTask: (
@@ -17,7 +18,7 @@ export function TaskInput({ onAddTask }: TaskInputProps) {
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState<Priority>('medium');
   const [dueDate, setDueDate] = useState('');
-  const [category, setCategory] = useState<TaskCategory>('General' as TaskCategory);
+  const [category, setCategory] = useState<TaskCategory>('Personal');
   const [notes, setNotes] = useState('');
   const [estimatedMinutes, setEstimatedMinutes] = useState<number | undefined>(undefined);
   const [showOptions, setShowOptions] = useState(false);
@@ -64,6 +65,8 @@ export function TaskInput({ onAddTask }: TaskInputProps) {
     setDueDate(d.toISOString().split('T')[0]);
   };
 
+  const currentCategoryConfig = CATEGORY_CONFIG[category] || CATEGORY_CONFIG.Personal;
+
   return (
     <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xs transition-colors">
       <form onSubmit={handleSubmit} className="space-y-3">
@@ -79,7 +82,7 @@ export function TaskInput({ onAddTask }: TaskInputProps) {
                 if (errorMessage) setErrorMessage(null);
               }}
               onKeyDown={handleKeyDown}
-              placeholder="Enter your task... (e.g. Complete DSA assignment)"
+              placeholder="Enter your task... (e.g., Buy groceries, Submit report, Exercise)"
               maxLength={200}
               className={`w-full h-11 px-4 text-sm bg-slate-50 dark:bg-slate-800/80 border ${
                 errorMessage
@@ -93,6 +96,27 @@ export function TaskInput({ onAddTask }: TaskInputProps) {
                 {title.length}/200
               </span>
             )}
+          </div>
+
+          {/* Category Dropdown Selector (Visible and quick to select) */}
+          <div className="relative shrink-0 flex items-center">
+            <div className="relative w-full sm:w-auto">
+              <span className={`w-2 h-2 rounded-full absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none ${currentCategoryConfig.dotColor}`} />
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value as TaskCategory)}
+                className="h-11 pl-7 pr-8 text-xs font-semibold bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer appearance-none transition-colors w-full sm:w-36"
+                aria-label="Select task category"
+                title="Task Category"
+              >
+                {TASK_CATEGORIES.map((cat) => (
+                  <option key={cat} value={cat} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
+                    {cat}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+            </div>
           </div>
 
           <button
@@ -228,10 +252,11 @@ export function TaskInput({ onAddTask }: TaskInputProps) {
                       onChange={(e) => setCategory(e.target.value as TaskCategory)}
                       className="w-full h-8 pl-8 pr-2.5 text-xs bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
                     >
-                      <option value="Study">Study</option>
-                      <option value="Work">Work</option>
-                      <option value="Personal">Personal</option>
-                      <option value="Other">Other</option>
+                      {TASK_CATEGORIES.map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
                     </select>
                   </div>
 

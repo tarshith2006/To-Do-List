@@ -32,10 +32,12 @@ A modern, responsive, and realistic task-management application featuring **Subt
 - Single-click scheduling for `Today`, `Tomorrow`, and `Next Week`.
 - Relative due date indicators (`Due Today`, `Due Tomorrow`, or `Overdue`).
 
-### 6. Dynamic Search & Multi-Criteria Filtering
-- Real-time search scanning titles, categories, notes, and subtasks.
-- Filter by workflow status (*All*, *To Do*, *In Progress*, *Completed*) and priority (*High*, *Medium*, *Low*).
-- Sort by Newest, Oldest, Due Date, Priority, Estimated Duration, or Alphabetical.
+### 6. Category Tagging & Multi-Criteria Filtering
+- **Color-Coded Categories**: Categorize tasks under **Personal**, **Work**, **Shopping**, **Study**, **Health**, or **Other**.
+- **Quick Dropdown Selector**: Built right into the `TaskInput` bar for 1-click categorization.
+- **Dedicated Category Filter Bar**: Filter by category chips in `TaskFilterBar` with live color badges and indicators.
+- **Workflow Status & Priority Filtering**: Segment by workflow status (*All*, *To Do*, *In Progress*, *Completed*) and priority (*High*, *Medium*, *Low*).
+- **Dynamic Search & Sorting**: Real-time search across titles, categories, notes, and subtasks; sort by Newest, Oldest, Due Date, Priority, Duration, or Alphabetical.
 
 ### 7. Harmonic Audio Feedback
 - Subtle Web Audio API chime plays upon task or subtask completion (zero external audio files).

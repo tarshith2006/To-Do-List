@@ -43,6 +43,8 @@ export default function App() {
     setFilter,
     priorityFilter,
     setPriorityFilter,
+    categoryFilter,
+    setCategoryFilter,
     searchQuery,
     setSearchQuery,
     sortBy,
@@ -150,6 +152,8 @@ export default function App() {
             onFilterChange={setFilter}
             priorityFilter={priorityFilter}
             onPriorityFilterChange={setPriorityFilter}
+            categoryFilter={categoryFilter}
+            onCategoryFilterChange={setCategoryFilter}
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
             sortBy={sortBy}
